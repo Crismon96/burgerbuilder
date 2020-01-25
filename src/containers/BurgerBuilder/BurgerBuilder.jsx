@@ -35,7 +35,7 @@ class BurgerBuilder extends Component {
         return(
         <div>
             <Burger ingredients={this.state.ingredients}/>
-            <Modal shouldOpen={this.state.isPurchasing}>
+            <Modal cancelOrder={this.cancelOrderModal} shouldOpen={this.state.isPurchasing}>
                 <OrderSummary ingredients={this.state.ingredients} />
             </Modal>
             <BuildControls purchase={this.onPurchase} puchaseable={this.state.isPurchaseable} totalPrice={this.state.totalPrice} disableRemove={disableDecrease} addIng={this.addIngredient} remIng={this.removeIngredient}/>
@@ -83,10 +83,14 @@ class BurgerBuilder extends Component {
             });
             this.updatePurchasable(currentIngState);
         }
-    }
+    };
 
     onPurchase = () => {
         this.setState({isPurchasing: true})
+    };
+
+    cancelOrderModal = () => {
+        this.setState({isPurchasing: false})
     }
 }
 
