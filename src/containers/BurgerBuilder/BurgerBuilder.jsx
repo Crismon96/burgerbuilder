@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from "../../components/BuildControls/BuildControls";
+import Modal from "../../components/Modal/Modal";
+import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
 const TOTAL_PRICES = {
     bacon: 0.6,
@@ -17,16 +19,37 @@ class BurgerBuilder extends Component {
             cheese: 0,
             meat: 0
         },
-        totalPrice: 1.5
+        totalPrice: 1.5,
+        isPurchaseable: false
     };
 
     render() {
+        const disableDecrease = {
+            ...this.state.ingredients
+        };
+        for (let key in disableDecrease) {
+            disableDecrease[key] = disableDecrease[key] <= 0;
+        }
+
         return(
         <div>
             <Burger ingredients={this.state.ingredients}/>
-            <div style={{width: "100%", textAlign: "center", fontWeight: "bold", fontSize: "200%"}}>{Math.round(this.state.totalPrice * 10) / 10}€</div>
-            <BuildControls addIng={this.addIngredient} remIng={this.removeIngredient}/>
+            <Modal>
+                <OrderSummary ingredients={this.state.ingredients} />
+            </Modal>
+            <BuildControls puchaseable={this.state.isPurchaseable} totalPrice={this.state.totalPrice} disableRemove={disableDecrease} addIng={this.addIngredient} remIng={this.removeIngredient}/>
         </div>)
+    }
+
+    updatePurchasable(ingredients) {
+        const sumIngredients = Object.keys(ingredients)
+            .map((igKey) => {
+                return ingredients[igKey]
+            })
+            .reduce((sum, el) => {
+                return sum + el
+        }, 0);
+        this.setState({isPurchaseable: sumIngredients})
     }
 
     addIngredient = (ing) => {
@@ -41,6 +64,7 @@ class BurgerBuilder extends Component {
             },
             totalPrice: currentPrice
         });
+        this.updatePurchasable(currentIngState);
     };
 
     removeIngredient = (ing) => {
@@ -56,7 +80,7 @@ class BurgerBuilder extends Component {
                 },
                 totalPrice: currentPrice
             });
-
+            this.updatePurchasable(currentIngState);
         }
     }
 }

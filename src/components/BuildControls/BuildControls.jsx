@@ -12,8 +12,10 @@ const controls = [
 const buildControls = (props) => {
     return (
         <div className={Classes.BuildControls}>
+            <div style={{width: "100%", textAlign: "center", fontWeight: "bold", fontSize: "200%"}}>{Math.round(props.totalPrice * 10) / 10}€</div>
             {controls.map((ctrl) => {
                 return <BuildControl
+                    disableRemove={props.disableRemove[ctrl.type]}
                     label={ctrl.label}
                     type={ctrl.type}
                     key={ctrl.label}
@@ -21,6 +23,7 @@ const buildControls = (props) => {
                     removed={() => props.remIng(ctrl.type)}
                 />
             })}
+            <button className={Classes.OrderButton} disabled={!props.puchaseable}>Order Burger</button>
         </div>
     )
 };
