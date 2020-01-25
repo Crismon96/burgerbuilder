@@ -20,7 +20,8 @@ class BurgerBuilder extends Component {
             meat: 0
         },
         totalPrice: 1.5,
-        isPurchaseable: false
+        isPurchaseable: false,
+        isPurchasing: false
     };
 
     render() {
@@ -34,10 +35,10 @@ class BurgerBuilder extends Component {
         return(
         <div>
             <Burger ingredients={this.state.ingredients}/>
-            <Modal>
+            <Modal shouldOpen={this.state.isPurchasing}>
                 <OrderSummary ingredients={this.state.ingredients} />
             </Modal>
-            <BuildControls puchaseable={this.state.isPurchaseable} totalPrice={this.state.totalPrice} disableRemove={disableDecrease} addIng={this.addIngredient} remIng={this.removeIngredient}/>
+            <BuildControls purchase={this.onPurchase} puchaseable={this.state.isPurchaseable} totalPrice={this.state.totalPrice} disableRemove={disableDecrease} addIng={this.addIngredient} remIng={this.removeIngredient}/>
         </div>)
     }
 
@@ -82,6 +83,10 @@ class BurgerBuilder extends Component {
             });
             this.updatePurchasable(currentIngState);
         }
+    }
+
+    onPurchase = () => {
+        this.setState({isPurchasing: true})
     }
 }
 
