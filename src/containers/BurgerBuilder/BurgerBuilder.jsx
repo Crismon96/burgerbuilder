@@ -36,7 +36,7 @@ class BurgerBuilder extends Component {
         <div>
             <Burger ingredients={this.state.ingredients}/>
             <Modal cancelOrder={this.cancelOrderModal} shouldOpen={this.state.isPurchasing}>
-                <OrderSummary ingredients={this.state.ingredients} />
+                <OrderSummary confirmOrder={this.completePurchase} dismissOrder={this.cancelOrderModal} ingredients={this.state.ingredients} cancel/>
             </Modal>
             <BuildControls purchase={this.onPurchase} puchaseable={this.state.isPurchaseable} totalPrice={this.state.totalPrice} disableRemove={disableDecrease} addIng={this.addIngredient} remIng={this.removeIngredient}/>
         </div>)
@@ -91,7 +91,12 @@ class BurgerBuilder extends Component {
 
     cancelOrderModal = () => {
         this.setState({isPurchasing: false})
-    }
+    };
+
+    completePurchase = () => {
+        alert("Burger was ordered")
+        this.setState({isPurchasing: false})
+    };
 }
 
 export default BurgerBuilder;
